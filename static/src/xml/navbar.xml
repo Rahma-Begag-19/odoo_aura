@@ -4,6 +4,7 @@
     <t t-name="web.NavBar" t-inherit="web.NavBar" t-inherit-mode="extension">
         <xpath expr="//nav[hasclass('o_main_navbar')]" position="inside">
 
+            <!-- Company header -->
             <div class="o_aura_company_header" t-if="auraCompany">
                 <img class="o_aura_company_logo"
                      t-att-src="'/web/image/res.company/' + auraCompany.id + '/logo'"
@@ -17,6 +18,7 @@
                 </button>
             </div>
 
+            <!-- Apps grid -->
             <div class="o_aura_apps">
                 <button type="button" class="o_aura_apps_btn" t-on-click="toggleAuraApps" title="Apps">
                     <i class="oi oi-apps"/>
@@ -37,6 +39,27 @@
                         <img t-att-src="auraAppIcon(app)" t-att-alt="app.name"/>
                     </button>
                 </div>
+            </div>
+
+            <!-- Sub menus of the current app -->
+            <div class="o_aura_menu" t-if="auraCurrentApp">
+                <div class="o_aura_current_app">
+                    <img t-att-src="auraAppIcon(auraCurrentApp)" alt=""/>
+                    <span t-out="auraCurrentApp.name"/>
+                </div>
+
+                <t t-foreach="auraMenuRows" t-as="row" t-key="row.menu.id">
+                    <button type="button"
+                            class="o_aura_menu_item"
+                            t-att-class="{ 'has_children': row.hasChildren, 'open': row.open }"
+                            t-attf-style="--aura-depth: #{row.depth}"
+                            t-on-click="() => this.onAuraMenuClick(row)">
+                        <span class="o_aura_menu_label" t-out="row.menu.name"/>
+                        <i t-if="row.hasChildren"
+                           class="fa o_aura_menu_caret"
+                           t-att-class="row.open ? 'fa-chevron-up' : 'fa-chevron-down'"/>
+                    </button>
+                </t>
             </div>
 
         </xpath>

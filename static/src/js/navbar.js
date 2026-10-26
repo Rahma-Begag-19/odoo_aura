@@ -26,6 +26,7 @@ patch(NavBar.prototype, {
         this.auraState = useState({
             collapsed: readCollapsed(),
             appsOpen: false,
+            openMenus: {},   // { [menuId]: true } for expanded sub menus
         });
         this._applyAuraCollapsed();
     },
@@ -55,6 +56,37 @@ patch(NavBar.prototype, {
     async openAuraApp(app) {
         this.auraState.appsOpen = false;
         await this.auraMenuService.selectMenu(app);
+    },
+
+    /* ----- Sub menus of the current app (flat list of rows for the template) ----- */
+    get auraMenuRows() {
+        const app = this.auraCurrentApp;
+        if (!app) {
+            return [];
+        }
+        const tree = this.auraMenuService.getMenuAsTree(app.id);
+        const rows = [];
+        const walk = (nodes, depth) => {
+            for (const menu of nodes) {
+                const children = menu.childrenTree || [];
+                const hasChildren = children.length > 0;
+                const open = hasChildren && !!this.auraState.openMenus[menu.id];
+                rows.push({ menu, depth, hasChildren, open });
+                if (open) {
+                    walk(children, depth + 1);
+                }
+            }
+        };
+        walk(tree.childrenTree || [], 0);
+        return rows;
+    },
+
+    onAuraMenuClick(row) {
+        if (row.hasChildren) {
+            this.auraState.openMenus[row.menu.id] = !this.auraState.openMenus[row.menu.id];
+            return;
+        }
+        this.auraMenuService.selectMenu(row.menu);
     },
 
     /* ----- Collapse ----- */

@@ -444,3 +444,98 @@
         padding: 6px 0;
     }
 }
+
+/* ========== SUB MENUS (custom accordion) ========== */
+.o_aura_menu {
+    display: none;   /* desktop only, mobile keeps Odoo's own sections */
+}
+
+@media (min-width: 768px) {
+
+    /* Hide Odoo's native sections and app name, we render our own */
+    .o_main_navbar .o_menu_sections,
+    .o_main_navbar .o_menu_brand {
+        display: none !important;
+    }
+
+    .o_aura_menu {
+        order: -1;                 /* after the company header and apps grid */
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        padding: 4px 8px 8px;
+    }
+
+    /* Current app name + icon */
+    .o_aura_current_app {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        margin-bottom: 2px;
+        font-weight: 700;
+        color: #000;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .o_aura_current_app img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    .o_aura_current_app span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Menu rows (indented by depth) */
+    .o_aura_menu_item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin: 2px 0;
+        padding: 8px 10px 8px calc(10px + var(--aura-depth, 0) * 14px);
+        font: inherit;
+        text-align: left;
+        color: #000 !important;
+        background: transparent !important;
+        border: none;
+        border-radius: var(--o-aura-item-radius);
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .o_aura_menu_item:hover,
+    .o_aura_menu_item.open {
+        background: var(--o-aura-nav-color) !important;
+        color: #fff !important;
+    }
+
+    .o_aura_menu_item:hover {
+        transform: translateX(3px);
+    }
+
+    .o_aura_menu_label {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .o_aura_menu_caret {
+        margin-left: auto;
+        font-size: 10px;
+    }
+
+    /* Collapsed sidebar: sub menus hidden, only icons remain */
+    body.o_aura_nav_collapsed .o_aura_menu {
+        display: none;
+    }
+}
