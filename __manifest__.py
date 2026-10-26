@@ -19,6 +19,11 @@
         'base',
         'web',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'odoo_aura/static/src/scss/navbar.scss',
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,

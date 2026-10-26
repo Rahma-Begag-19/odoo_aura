@@ -1,0 +1,67 @@
+
+/* Odoo Aura - Left Navigation Experiment */
+
+/* Move the backend navbar to the left */
+.o_main_navbar {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh !important;
+    z-index: 1050;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 12px 8px;
+    border-bottom: none;
+    border-right: 1px solid #e5e7eb;
+    box-sizing: border-box;
+}
+
+/* Stack navbar menu groups vertically */
+.o_main_navbar > ul {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+/* Make menu entries use the available sidebar width */
+.o_main_navbar .o_menu_sections,
+.o_main_navbar .o_menu_systray {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Keep menu entries readable */
+.o_main_navbar .o_nav_entry,
+.o_main_navbar .dropdown-toggle {
+    width: 100%;
+    text-align: left;
+}
+
+/* Leave room for the fixed sidebar */
+.o_web_client {
+    padding-left: 240px;
+}
+
+/* Avoid the sidebar taking space on narrow screens */
+@media (max-width: 767.98px) {
+    .o_main_navbar {
+        position: relative !important;
+        width: 100%;
+        height: auto !important;
+        bottom: auto;
+    }
+
+    .o_web_client {
+        padding-left: 0;
+    }
+}
