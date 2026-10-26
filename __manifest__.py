@@ -19,6 +19,10 @@
         'base',
         'web',
     ],
+    'depends': ['web', 'base_setup'],
+    'data': [
+        'views/res_config_settings_views.xml',
+    ],
     'assets': {
         'web.assets_backend': [
             'odoo_aura/static/src/js/navbar.js',
