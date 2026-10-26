@@ -534,7 +534,7 @@
         font-size: 10px;
     }
 
-    /* Collapsed sidebar: sub menus hidden, only icons remain */
+        /* Collapsed sidebar: keep the current app logo, hide the name and sub menus */
     body.o_aura_nav_collapsed .o_aura_menu {
         padding: 4px 0 8px;
         align-items: center;
