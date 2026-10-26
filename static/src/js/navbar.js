@@ -10,8 +10,26 @@ import { useState } from "@odoo/owl";
 
 const STORAGE_KEY = "aura.navbar.collapsed";
 const BODY_CLASS = "o_aura_nav_collapsed";
+const FONT_CLASS = "o_aura_custom_font";
+const FONT_LINK_ID = "o_aura_font_link";
 const DEFAULT_APP_ICON = "/web/static/img/default_icon_app.png";
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
+
+// Setting value -> CSS font stack ("default" is not listed: Odoo keeps its own font)
+const FONT_STACKS = {
+    mono: '"SF Mono", Menlo, Consolas, "Courier New", monospace',
+    roboto: '"Roboto", sans-serif',
+    work_sans: '"Work Sans", sans-serif',
+    tuffy: '"Tuffy", sans-serif',
+    sans_serif: "sans-serif",
+};
+
+// Fonts that must be downloaded from Google Fonts (loaded only when selected)
+const GOOGLE_FONTS = {
+    roboto: "Roboto:wght@400;500;700",
+    work_sans: "Work+Sans:wght@400;500;600;700",
+    tuffy: "Tuffy:wght@400;700",
+};
 
 function readCollapsed() {
     try {
@@ -32,6 +50,7 @@ patch(NavBar.prototype, {
         });
         this._applyAuraCollapsed();
         this._applyAuraColors();
+        this._applyAuraFont();
     },
 
     /* ----- Colors from Settings ----- */
@@ -43,6 +62,29 @@ patch(NavBar.prototype, {
         }
         const text = session.aura_navbar_text_color === "black" ? "#000" : "#fff";
         root.setProperty("--o-aura-text", text);
+    },
+
+    /* ----- Font from Settings (whole app) ----- */
+    _applyAuraFont() {
+        const root = document.documentElement;
+        const key = session.aura_font;
+        const stack = FONT_STACKS[key];
+        if (!stack) {
+            root.style.removeProperty("--o-aura-font");
+            root.classList.remove(FONT_CLASS);
+            return;
+        }
+        // Download the web font if this one needs it
+        const family = GOOGLE_FONTS[key];
+        if (family && !document.getElementById(FONT_LINK_ID)) {
+            const link = document.createElement("link");
+            link.id = FONT_LINK_ID;
+            link.rel = "stylesheet";
+            link.href = `https://fonts.googleapis.com/css2?family=${family}&display=swap`;
+            document.head.appendChild(link);
+        }
+        root.style.setProperty("--o-aura-font", stack);
+        root.classList.add(FONT_CLASS);
     },
 
     /* ----- Company ----- */

@@ -6,12 +6,15 @@
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//app[@name='general_settings']" position="inside">
-                <block title="Aura Navbar" name="aura_navbar_setting_container">
+                <block title="Aura Theme" name="aura_navbar_setting_container">
                     <setting string="Navbar Color" help="Main color of the sidebar navigation.">
                         <field name="aura_navbar_color" widget="color"/>
                     </setting>
                     <setting string="Navbar Text Color" help="Text and icon color in the sidebar.">
                         <field name="aura_navbar_text_color" widget="radio"/>
+                    </setting>
+                    <setting string="Font Style" help="Font used across the whole application.">
+                        <field name="aura_font"/>
                     </setting>
                 </block>
             </xpath>

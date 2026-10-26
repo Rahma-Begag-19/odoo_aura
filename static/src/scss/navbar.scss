@@ -482,3 +482,20 @@
         justify-content: flex-end;
     }
 }
+
+/* ========== APP FONT (chosen in Settings) ========== */
+/* Only active when a font other than "Odoo Default" is selected */
+html.o_aura_custom_font {
+    --bs-body-font-family: var(--o-aura-font);
+}
+
+html.o_aura_custom_font body,
+html.o_aura_custom_font .o_web_client,
+html.o_aura_custom_font button,
+html.o_aura_custom_font input,
+html.o_aura_custom_font select,
+html.o_aura_custom_font textarea,
+html.o_aura_custom_font .btn,
+html.o_aura_custom_font .dropdown-menu {
+    font-family: var(--o-aura-font);
+}
