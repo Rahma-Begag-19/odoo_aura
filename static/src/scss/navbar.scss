@@ -146,30 +146,50 @@
 }
 
 /* ========== SOFT BACKGROUND + DARK TEXT ========== */
-.o_main_navbar {
-    /* keeps the original color underneath, covered by an 85% white veil */
-    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85));
+/* ========== SOFT BACKGROUND + DARK TEXT (whole navbar) ========== */
+:root {
+    /* put your ORIGINAL navbar color here */
+    --o-aura-nav-color: #714b67;
+    /* veil opacity: higher = lighter, 0 = original color */
+    --o-aura-veil: 0.85;
 }
 
-.o_main_navbar,
+.o_main_navbar {
+    background-color: var(--o-aura-nav-color) !important;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, var(--o-aura-veil)),
+        rgba(255, 255, 255, var(--o-aura-veil))
+    ) !important;
+}
+
+/* Every child is transparent, so the whole navbar shows one color */
+.o_main_navbar .o_menu_sections,
+.o_main_navbar .o_navbar_apps_menu,
+.o_main_navbar .o_menu_systray,
+.o_main_navbar .o_aura_company_header,
 .o_main_navbar .o_nav_entry,
 .o_main_navbar .dropdown-toggle,
 .o_main_navbar .o_menu_brand,
-.o_main_navbar .o_navbar_apps_menu button,
-.o_main_navbar .o_menu_systray,
-.o_main_navbar .o_menu_systray .o_nav_entry,
-.o_main_navbar .o_menu_systray .dropdown-toggle,
-.o_main_navbar .o_menu_systray i,
-.o_main_navbar .o_menu_systray .fa {
+.o_main_navbar .o_navbar_apps_menu button {
+    background: transparent !important;
     color: #000 !important;
 }
 
-/* Hover/active feedback readable on a light background */
+.o_main_navbar i,
+.o_main_navbar .fa {
+    color: inherit !important;
+}
+
+/* Hover / open: veil goes to 0 (original color back) and text turns white */
 .o_main_navbar .o_nav_entry:hover,
 .o_main_navbar .dropdown-toggle:hover,
+.o_main_navbar .dropdown-toggle.show,
 .o_main_navbar .o_menu_brand:hover,
-.o_main_navbar .o_navbar_apps_menu button:hover {
-    background-color: rgba(0, 0, 0, 0.08) !important;
+.o_main_navbar .o_navbar_apps_menu button:hover,
+.o_main_navbar .o_menu_systray .o_nav_entry:hover,
+.o_main_navbar .o_menu_systray .dropdown-toggle:hover {
+    background: var(--o-aura-nav-color) !important;
+    color: #fff !important;
 }
 
 /* ========== COMPANY LOGO + NAME (side by side) ========== */
