@@ -7,22 +7,18 @@
     --o-aura-radius: 20px;                    /* sidebar corners */
     --o-aura-item-radius: 12px;               /* menu item corners */
 
-    /* put your ORIGINAL navbar color here */
+    /* Defaults, overridden by the color chosen in Settings (set from JS) */
     --o-aura-nav-color: #714b67;
-    /* veil opacity: higher = lighter, 0 = original color */
-    --o-aura-veil: 0.85;
+    --o-aura-text: #fff;
 }
 
-/* ========== COLORS (all screen sizes) ========== */
+/* ========== THEME: navbar uses the chosen color ========== */
 .o_main_navbar {
     background-color: var(--o-aura-nav-color) !important;
-    background-image: linear-gradient(
-        rgba(255, 255, 255, var(--o-aura-veil)),
-        rgba(255, 255, 255, var(--o-aura-veil))
-    ) !important;
+    background-image: none !important;
 }
 
-/* Every child is transparent so the whole navbar shows one color */
+/* Native parts stay transparent so the whole navbar is one color */
 .o_main_navbar .o_menu_sections,
 .o_main_navbar .o_navbar_apps_menu,
 .o_main_navbar .o_menu_systray,
@@ -32,7 +28,20 @@
 .o_main_navbar .o_menu_brand,
 .o_main_navbar .o_navbar_apps_menu button {
     background: transparent !important;
-    color: #000 !important;
+}
+
+/* Text and icons */
+.o_main_navbar,
+.o_main_navbar .o_nav_entry,
+.o_main_navbar .dropdown-toggle,
+.o_main_navbar .o_menu_brand,
+.o_main_navbar .o_menu_systray,
+.o_main_navbar .o_aura_company_name,
+.o_main_navbar .o_aura_toggle,
+.o_main_navbar .o_aura_apps_btn,
+.o_main_navbar .o_aura_current_app,
+.o_main_navbar .o_aura_menu_item {
+    color: var(--o-aura-text) !important;
 }
 
 .o_main_navbar i,
@@ -40,17 +49,20 @@
     color: inherit !important;
 }
 
-/* Hover / open / active: original color back, white text */
+/* Hover / open / active: soft highlight, text stays readable */
 .o_main_navbar .o_nav_entry:hover,
 .o_main_navbar .o_nav_entry.active,
 .o_main_navbar .dropdown-toggle:hover,
 .o_main_navbar .dropdown-toggle.show,
-.o_main_navbar .o_menu_brand:hover,
-.o_main_navbar .o_navbar_apps_menu button:hover,
 .o_main_navbar .o_menu_systray .o_nav_entry:hover,
-.o_main_navbar .o_menu_systray .dropdown-toggle:hover {
-    background: var(--o-aura-nav-color) !important;
-    color: #fff !important;
+.o_main_navbar .o_menu_systray .dropdown-toggle:hover,
+.o_main_navbar .o_aura_apps_btn:hover,
+.o_main_navbar .o_aura_toggle:hover,
+.o_main_navbar .o_aura_menu_item:hover,
+.o_main_navbar .o_aura_menu_item.open {
+    background: color-mix(in srgb, var(--o-aura-text) 16%, transparent) !important;
+    color: var(--o-aura-text) !important;
+    border-color: color-mix(in srgb, var(--o-aura-text) 40%, transparent) !important;
 }
 
 /* ========== COMPANY LOGO + NAME + TOGGLE ========== */
@@ -61,7 +73,7 @@
     align-items: center;
     gap: 10px;
     padding: 14px 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid color-mix(in srgb, var(--o-aura-text) 20%, transparent);
     margin-bottom: 8px;
     flex-shrink: 0;
     min-width: 0;
@@ -81,7 +93,6 @@
     font-size: inherit;
     font-weight: 700;
     line-height: 1.3;
-    color: #000;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -97,18 +108,17 @@
     margin-left: auto;
     flex-shrink: 0;
     font-size: 11px;
-    color: #000 !important;
-    background: transparent !important;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--o-aura-text) 35%, transparent);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.o_aura_toggle:hover {
-    background: var(--o-aura-nav-color) !important;
-    color: #fff !important;
-    border-color: var(--o-aura-nav-color);
+/* Our custom blocks are desktop only */
+.o_aura_apps,
+.o_aura_menu {
+    display: none;
 }
 
 /* ========== DESKTOP: SIDEBAR IN THE LAYOUT ========== */
@@ -134,7 +144,7 @@
         transition: width 0.25s ease;
     }
 
-    /* The card itself: normal flow, no fixed positioning */
+    /* The card itself: normal flow, rounded corners */
     .o_main_navbar {
         position: relative !important;
         flex: 1;
@@ -158,26 +168,26 @@
         min-width: 0;
     }
 
-    /* ----- Menu sections ----- */
-    .o_main_navbar > .o_menu_sections,
-    .o_main_navbar > .o_navbar_apps_menu,
-    .o_main_navbar > .o_menu_brand {
-        width: 100% !important;
+    /* Hide Odoo's native apps button, sections and brand: we render our own */
+    .o_main_navbar .o_navbar_apps_menu,
+    .o_main_navbar .o_menu_sections,
+    .o_main_navbar .o_menu_brand {
+        display: none !important;
     }
 
-    .o_main_navbar .o_menu_sections {
+    /* ----- Systray (bottom) ----- */
+    .o_main_navbar .o_menu_systray {
         display: flex !important;
         flex-direction: column !important;
-        align-items: stretch !important;
-        flex: 1;
-        padding: 0 8px !important;
-        margin: 0 !important;
+        width: 100% !important;
+        margin-top: auto;
+        padding: 10px 8px;
+        border-top: 1px solid color-mix(in srgb, var(--o-aura-text) 20%, transparent);
+        gap: 4px;
     }
 
-    /* Menu entries: pill shape + smooth hover */
     .o_main_navbar .o_nav_entry,
-    .o_main_navbar .dropdown-toggle,
-    .o_main_navbar .o_menu_brand {
+    .o_main_navbar .dropdown-toggle {
         display: flex;
         align-items: center;
         width: 100% !important;
@@ -189,20 +199,16 @@
         transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
-    .o_main_navbar .o_nav_entry:hover,
-    .o_main_navbar .dropdown-toggle:hover {
-        transform: translateX(3px);
-    }
-
     .o_main_navbar .dropdown-toggle::after {
         margin-left: auto;
         transition: transform 0.2s ease;
     }
+
     .o_main_navbar .dropdown-toggle.show::after {
         transform: rotate(180deg);
     }
 
-    /* ----- Submenus: expand inline under the parent (accordion) ----- */
+    /* Dropdowns inside the sidebar (user menu etc.) open inline */
     .o_main_navbar .dropdown-menu {
         position: static !important;
         inset: auto !important;
@@ -213,7 +219,7 @@
         padding: 0 0 0 12px !important;
         background: transparent !important;
         border: none !important;
-        border-left: 2px solid rgba(0, 0, 0, 0.12) !important;
+        border-left: 2px solid color-mix(in srgb, var(--o-aura-text) 20%, transparent) !important;
         border-radius: 0 !important;
         box-shadow: none !important;
     }
@@ -224,7 +230,7 @@
         padding: 6px 10px;
         margin: 2px 0;
         font-size: 0.95em;
-        color: #000 !important;
+        color: var(--o-aura-text) !important;
         background: transparent !important;
         border-radius: var(--o-aura-item-radius);
         transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
@@ -232,33 +238,144 @@
 
     .o_main_navbar .dropdown-menu .dropdown-item:hover,
     .o_main_navbar .dropdown-menu .dropdown-item.active {
-        background: var(--o-aura-nav-color) !important;
-        color: #fff !important;
+        background: color-mix(in srgb, var(--o-aura-text) 16%, transparent) !important;
+        color: var(--o-aura-text) !important;
         transform: translateX(3px);
     }
 
-    /* ----- Apps button ----- */
-    .o_main_navbar .o_navbar_apps_menu {
-        padding: 4px 8px;
+    /* ========== APPS GRID ========== */
+    .o_aura_apps {
+        order: -1;                 /* right after the company header */
+        display: block;
+        flex-shrink: 0;
+        padding: 0 8px;
     }
 
-    .o_main_navbar .o_navbar_apps_menu button {
+    .o_aura_apps_btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
         width: 100%;
-        justify-content: flex-start;
         padding: 8px 10px;
+        font: inherit;
+        background: transparent;
+        border: none;
         border-radius: var(--o-aura-item-radius);
+        cursor: pointer;
         transition: background-color 0.2s ease, color 0.2s ease;
     }
 
-    /* ----- Systray (bottom) ----- */
-    .o_main_navbar .o_menu_systray {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        margin-top: auto;
-        padding: 10px 8px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        gap: 4px;
+    .o_aura_apps_caret {
+        margin-left: auto;
+        font-size: 10px;
+    }
+
+    .o_aura_apps_grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);   /* apps per row */
+        gap: 8px;
+        justify-items: center;
+        margin: 6px 0 8px;
+        padding: 8px;
+        background: color-mix(in srgb, var(--o-aura-text) 8%, transparent);
+        border-radius: var(--o-aura-item-radius);
+    }
+
+    .o_aura_app {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: var(--o-aura-item-radius);
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .o_aura_app img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    .o_aura_app:hover {
+        background: color-mix(in srgb, var(--o-aura-text) 16%, transparent);
+        transform: scale(1.08);
+    }
+
+    .o_aura_app.active {
+        background: color-mix(in srgb, var(--o-aura-text) 24%, transparent);
+    }
+
+    /* ========== SUB MENUS (custom accordion) ========== */
+    .o_aura_menu {
+        order: -1;                 /* after the company header and apps grid */
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        padding: 4px 8px 8px;
+    }
+
+    .o_aura_current_app {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        margin-bottom: 2px;
+        font-weight: 700;
+        border-top: 1px solid color-mix(in srgb, var(--o-aura-text) 20%, transparent);
+    }
+
+    .o_aura_current_app img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    .o_aura_current_app span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .o_aura_menu_item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin: 2px 0;
+        padding: 8px 10px 8px calc(10px + var(--aura-depth, 0) * 14px);
+        font: inherit;
+        text-align: left;
+        background: transparent;
+        border: none;
+        border-radius: var(--o-aura-item-radius);
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .o_aura_menu_item:hover {
+        transform: translateX(3px);
+    }
+
+    .o_aura_menu_label {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .o_aura_menu_caret {
+        margin-left: auto;
+        font-size: 10px;
     }
 
     /* ========== COLLAPSED ========== */
@@ -281,21 +398,48 @@
         margin-left: 0;
     }
 
-    body.o_aura_nav_collapsed .o_main_navbar .o_menu_sections {
-        display: none !important;
+    /* Apps: icon-only button, one app per row */
+    body.o_aura_nav_collapsed .o_aura_apps {
+        padding: 0 4px;
     }
 
-    body.o_aura_nav_collapsed .o_main_navbar .o_navbar_apps_menu {
-        padding: 4px 0;
-        display: flex;
+    body.o_aura_nav_collapsed .o_aura_apps_btn {
         justify-content: center;
     }
 
-    body.o_aura_nav_collapsed .o_main_navbar .o_navbar_apps_menu button {
-        width: auto;
-        justify-content: center;
+    body.o_aura_nav_collapsed .o_aura_apps_label,
+    body.o_aura_nav_collapsed .o_aura_apps_caret {
+        display: none;
     }
 
+    body.o_aura_nav_collapsed .o_aura_apps_grid {
+        grid-template-columns: 1fr;
+        padding: 6px 0;
+    }
+
+    /* Keep the current app logo, hide its name and sub menus */
+    body.o_aura_nav_collapsed .o_aura_menu {
+        padding: 4px 0 8px;
+        align-items: center;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_current_app {
+        justify-content: center;
+        padding: 10px 0;
+        margin: 0;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_current_app img {
+        width: 36px;
+        height: 36px;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_current_app span,
+    body.o_aura_nav_collapsed .o_aura_menu_item {
+        display: none;
+    }
+
+    /* Systray */
     body.o_aura_nav_collapsed .o_main_navbar .o_menu_systray {
         align-items: center;
         padding: 10px 0;
@@ -336,223 +480,5 @@
         margin-top: 0;
         border-top: none;
         justify-content: flex-end;
-    }
-}
-
-/* ========== APPS GRID (custom) ========== */
-.o_aura_apps {
-    display: none;   /* desktop only, mobile keeps Odoo's own apps menu */
-}
-
-@media (min-width: 768px) {
-
-    /* Hide Odoo's native apps button, we render our own */
-    .o_main_navbar .o_navbar_apps_menu {
-        display: none !important;
-    }
-
-    .o_aura_apps {
-        order: -1;                 /* right after the company header */
-        display: block;
-        flex-shrink: 0;
-        padding: 0 8px;
-    }
-
-    .o_aura_apps_btn {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding: 8px 10px;
-        font: inherit;
-        color: #000 !important;
-        background: transparent !important;
-        border: none;
-        border-radius: var(--o-aura-item-radius);
-        cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease;
-    }
-
-    .o_aura_apps_btn:hover {
-        background: var(--o-aura-nav-color) !important;
-        color: #fff !important;
-    }
-
-    .o_aura_apps_caret {
-        margin-left: auto;
-        font-size: 10px;
-    }
-
-    /* The grid, opens right under the button */
-    .o_aura_apps_grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);   /* apps per row */
-        gap: 8px;
-        justify-items: center;
-        margin: 6px 0 8px;
-        padding: 8px;
-        background: rgba(0, 0, 0, 0.04);
-        border-radius: var(--o-aura-item-radius);
-    }
-
-    .o_aura_app {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 44px;
-        padding: 0;
-        background: transparent;
-        border: none;
-        border-radius: var(--o-aura-item-radius);
-        cursor: pointer;
-        transition: background-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .o_aura_app img {
-        width: 32px;
-        height: 32px;
-        object-fit: contain;
-        border-radius: 8px;
-    }
-
-    .o_aura_app:hover {
-        background: rgba(0, 0, 0, 0.08);
-        transform: scale(1.08);
-    }
-
-    .o_aura_app.active {
-        background: rgba(0, 0, 0, 0.12);
-    }
-
-    /* Collapsed sidebar: icon-only button, one app per row */
-    body.o_aura_nav_collapsed .o_aura_apps {
-        padding: 0 4px;
-    }
-
-    body.o_aura_nav_collapsed .o_aura_apps_btn {
-        justify-content: center;
-    }
-
-    body.o_aura_nav_collapsed .o_aura_apps_label,
-    body.o_aura_nav_collapsed .o_aura_apps_caret {
-        display: none;
-    }
-
-    body.o_aura_nav_collapsed .o_aura_apps_grid {
-        grid-template-columns: 1fr;
-        padding: 6px 0;
-    }
-}
-
-/* ========== SUB MENUS (custom accordion) ========== */
-.o_aura_menu {
-    display: none;   /* desktop only, mobile keeps Odoo's own sections */
-}
-
-@media (min-width: 768px) {
-
-    /* Hide Odoo's native sections and app name, we render our own */
-    .o_main_navbar .o_menu_sections,
-    .o_main_navbar .o_menu_brand {
-        display: none !important;
-    }
-
-    .o_aura_menu {
-        order: -1;                 /* after the company header and apps grid */
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 0;
-        padding: 4px 8px 8px;
-    }
-
-    /* Current app name + icon */
-    .o_aura_current_app {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 10px;
-        margin-bottom: 2px;
-        font-weight: 700;
-        color: #000;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-    }
-
-    .o_aura_current_app img {
-        width: 24px;
-        height: 24px;
-        object-fit: contain;
-        border-radius: 6px;
-        flex-shrink: 0;
-    }
-
-    .o_aura_current_app span {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    /* Menu rows (indented by depth) */
-    .o_aura_menu_item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
-        margin: 2px 0;
-        padding: 8px 10px 8px calc(10px + var(--aura-depth, 0) * 14px);
-        font: inherit;
-        text-align: left;
-        color: #000 !important;
-        background: transparent !important;
-        border: none;
-        border-radius: var(--o-aura-item-radius);
-        cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-    }
-
-    .o_aura_menu_item:hover,
-    .o_aura_menu_item.open {
-        background: var(--o-aura-nav-color) !important;
-        color: #fff !important;
-    }
-
-    .o_aura_menu_item:hover {
-        transform: translateX(3px);
-    }
-
-    .o_aura_menu_label {
-        flex: 1;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .o_aura_menu_caret {
-        margin-left: auto;
-        font-size: 10px;
-    }
-
-        /* Collapsed sidebar: keep the current app logo, hide the name and sub menus */
-    body.o_aura_nav_collapsed .o_aura_menu {
-        padding: 4px 0 8px;
-        align-items: center;
-    }
-
-    body.o_aura_nav_collapsed .o_aura_current_app {
-        justify-content: center;
-        padding: 10px 0;
-        margin: 0;
-    }
-
-    body.o_aura_nav_collapsed .o_aura_current_app img {
-        width: 36px;
-        height: 36px;
-    }
-
-    body.o_aura_nav_collapsed .o_aura_current_app span,
-    body.o_aura_nav_collapsed .o_aura_menu_item {
-        display: none;
     }
 }

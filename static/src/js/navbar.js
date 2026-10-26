@@ -3,6 +3,7 @@
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { patch } from "@web/core/utils/patch";
 import { user } from "@web/core/user";
+import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
 import { useService } from "@web/core/utils/hooks";
 import { useState } from "@odoo/owl";
@@ -10,6 +11,7 @@ import { useState } from "@odoo/owl";
 const STORAGE_KEY = "aura.navbar.collapsed";
 const BODY_CLASS = "o_aura_nav_collapsed";
 const DEFAULT_APP_ICON = "/web/static/img/default_icon_app.png";
+const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 
 function readCollapsed() {
     try {
@@ -17,6 +19,15 @@ function readCollapsed() {
     } catch {
         return false;
     }
+}
+
+// Black text on light colors, white text on dark colors
+function textColorFor(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.6 ? "#000" : "#fff";
 }
 
 patch(NavBar.prototype, {
@@ -29,6 +40,17 @@ patch(NavBar.prototype, {
             openMenus: {},   // { [menuId]: true } for expanded sub menus
         });
         this._applyAuraCollapsed();
+        this._applyAuraColor();
+    },
+
+    /* ----- Color from Settings ----- */
+    _applyAuraColor() {
+        const color = session.aura_navbar_color;
+        if (color && HEX_COLOR.test(color)) {
+            const root = document.documentElement.style;
+            root.setProperty("--o-aura-nav-color", color);
+            root.setProperty("--o-aura-text", textColorFor(color));
+        }
     },
 
     /* ----- Company ----- */
