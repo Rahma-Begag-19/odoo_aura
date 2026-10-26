@@ -15,6 +15,12 @@ class ResConfigSettings(models.TransientModel):
         config_parameter="odoo_aura.navbar_text_color",
         default="white",
     )
+    aura_navbar_position = fields.Selection(
+        selection=[("left", "Left"), ("right", "Right")],
+        string="Navbar Position",
+        config_parameter="odoo_aura.navbar_position",
+        default="left",
+    )
     aura_font = fields.Selection(
         selection=[
             ("default", "Odoo Default"),
@@ -36,6 +42,7 @@ class ResConfigSettings(models.TransientModel):
         for name, fallback in (
             ("aura_font", "default"),
             ("aura_navbar_text_color", "white"),
+            ("aura_navbar_position", "left"),
         ):
             if name in res:
                 valid = [key for key, _label in self._fields[name].selection]
@@ -55,6 +62,9 @@ class IrHttp(models.AbstractModel):
         )
         info["aura_navbar_text_color"] = (
             params.get_param("odoo_aura.navbar_text_color") or "white"
+        )
+        info["aura_navbar_position"] = (
+            params.get_param("odoo_aura.navbar_position") or "left"
         )
         info["aura_font"] = params.get_param("odoo_aura.font") or "default"
         return info

@@ -499,3 +499,25 @@ html.o_aura_custom_font .btn,
 html.o_aura_custom_font .dropdown-menu {
     font-family: var(--o-aura-font);
 }
+
+/* ========== NAVBAR ON THE RIGHT (chosen in Settings) ========== */
+@media (min-width: 768px) {
+
+    /* Reverse the page row: [ content ] [ sidebar ] */
+    html.o_aura_nav_right .o_web_client {
+        flex-direction: row-reverse !important;
+    }
+
+    /* Hover slide goes toward the content (left) instead of right */
+    html.o_aura_nav_right .o_main_navbar .o_nav_entry:hover,
+    html.o_aura_nav_right .o_main_navbar .dropdown-toggle:hover,
+    html.o_aura_nav_right .o_aura_menu_item:hover,
+    html.o_aura_nav_right .o_main_navbar .dropdown-menu .dropdown-item:hover {
+        transform: translateX(-3px);
+    }
+
+    /* Collapse chevron points the other way */
+    html.o_aura_nav_right .o_aura_toggle .fa {
+        transform: scaleX(-1);
+    }
+}

@@ -13,6 +13,9 @@
                     <setting string="Navbar Text Color" help="Text and icon color in the sidebar.">
                         <field name="aura_navbar_text_color" widget="radio"/>
                     </setting>
+                    <setting string="Navbar Position" help="Show the sidebar on the left or on the right of the screen.">
+                        <field name="aura_navbar_position" widget="radio"/>
+                    </setting>
                     <setting string="Font Style" help="Font used across the whole application.">
                         <field name="aura_font"/>
                     </setting>

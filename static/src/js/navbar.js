@@ -11,6 +11,7 @@ import { useState } from "@odoo/owl";
 const STORAGE_KEY = "aura.navbar.collapsed";
 const BODY_CLASS = "o_aura_nav_collapsed";
 const FONT_CLASS = "o_aura_custom_font";
+const RIGHT_CLASS = "o_aura_nav_right";
 const FONT_LINK_ID = "o_aura_font_link";
 const DEFAULT_APP_ICON = "/web/static/img/default_icon_app.png";
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
@@ -50,6 +51,7 @@ patch(NavBar.prototype, {
         });
         this._applyAuraCollapsed();
         this._applyAuraColors();
+        this._applyAuraPosition();
         this._applyAuraFont();
     },
 
@@ -62,6 +64,14 @@ patch(NavBar.prototype, {
         }
         const text = session.aura_navbar_text_color === "black" ? "#000" : "#fff";
         root.setProperty("--o-aura-text", text);
+    },
+
+    /* ----- Position from Settings (left / right) ----- */
+    _applyAuraPosition() {
+        document.documentElement.classList.toggle(
+            RIGHT_CLASS,
+            session.aura_navbar_position === "right"
+        );
     },
 
     /* ----- Font from Settings (whole app) ----- */
