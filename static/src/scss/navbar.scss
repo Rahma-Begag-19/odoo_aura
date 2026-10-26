@@ -536,6 +536,23 @@
 
     /* Collapsed sidebar: sub menus hidden, only icons remain */
     body.o_aura_nav_collapsed .o_aura_menu {
+        padding: 4px 0 8px;
+        align-items: center;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_current_app {
+        justify-content: center;
+        padding: 10px 0;
+        margin: 0;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_current_app img {
+        width: 36px;
+        height: 36px;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_current_app span,
+    body.o_aura_nav_collapsed .o_aura_menu_item {
         display: none;
     }
 }
