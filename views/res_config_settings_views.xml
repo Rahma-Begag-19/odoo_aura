@@ -10,6 +10,9 @@
                     <setting string="Navbar Color" help="Main color of the sidebar navigation.">
                         <field name="aura_navbar_color" widget="color"/>
                     </setting>
+                    <setting string="Navbar Text Color" help="Text and icon color in the sidebar.">
+                        <field name="aura_navbar_text_color" widget="radio"/>
+                    </setting>
                 </block>
             </xpath>
         </field>

@@ -6,8 +6,14 @@ class ResConfigSettings(models.TransientModel):
 
     aura_navbar_color = fields.Char(
         string="Navbar Color",
-        config_parameter="your_module_name.navbar_color",
+        config_parameter="odoo_aura.navbar_color",
         default="#714b67",
+    )
+    aura_navbar_text_color = fields.Selection(
+        selection=[("white", "White"), ("black", "Black")],
+        string="Navbar Text Color",
+        config_parameter="odoo_aura.navbar_text_color",
+        default="white",
     )
 
 
@@ -16,8 +22,11 @@ class IrHttp(models.AbstractModel):
 
     def session_info(self):
         info = super().session_info()
+        params = self.env["ir.config_parameter"].sudo()
         info["aura_navbar_color"] = (
-            self.env["ir.config_parameter"].sudo().get_param("your_module_name.navbar_color")
-            or "#714b67"
+            params.get_param("odoo_aura.navbar_color") or "#714b67"
+        )
+        info["aura_navbar_text_color"] = (
+            params.get_param("odoo_aura.navbar_text_color") or "white"
         )
         return info

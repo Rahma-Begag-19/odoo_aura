@@ -21,15 +21,6 @@ function readCollapsed() {
     }
 }
 
-// Black text on light colors, white text on dark colors
-function textColorFor(hex) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.6 ? "#000" : "#fff";
-}
-
 patch(NavBar.prototype, {
     setup() {
         super.setup();
@@ -40,17 +31,18 @@ patch(NavBar.prototype, {
             openMenus: {},   // { [menuId]: true } for expanded sub menus
         });
         this._applyAuraCollapsed();
-        this._applyAuraColor();
+        this._applyAuraColors();
     },
 
-    /* ----- Color from Settings ----- */
-    _applyAuraColor() {
+    /* ----- Colors from Settings ----- */
+    _applyAuraColors() {
+        const root = document.documentElement.style;
         const color = session.aura_navbar_color;
         if (color && HEX_COLOR.test(color)) {
-            const root = document.documentElement.style;
             root.setProperty("--o-aura-nav-color", color);
-            root.setProperty("--o-aura-text", textColorFor(color));
         }
+        const text = session.aura_navbar_text_color === "black" ? "#000" : "#fff";
+        root.setProperty("--o-aura-text", text);
     },
 
     /* ----- Company ----- */
