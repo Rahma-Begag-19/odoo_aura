@@ -1,122 +1,228 @@
-/* Odoo Aura - Left Navigation */
+/* Odoo Aura - Floating Left Navigation */
 
 :root {
-    --o-aura-sidebar-width: 240px;
+    --o-aura-sidebar-width: 200px;   /* was 240px, change to taste */
+    --o-aura-gap: 12px;              /* space around the floating card */
+    --o-aura-radius: 20px;           /* navbar corners */
+    --o-aura-item-radius: 12px;      /* menu item pill corners */
+
+    /* put your ORIGINAL navbar color here */
+    --o-aura-nav-color: #714b67;
+    /* veil opacity: higher = lighter, 0 = original color */
+    --o-aura-veil: 0.85;
 }
 
-/* ========== SIDEBAR ========== */
+/* ========== COLORS (all screen sizes) ========== */
 .o_main_navbar {
-    position: fixed !important;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: var(--o-aura-sidebar-width);
-    height: 100vh !important;
-    z-index: 1050;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    border-bottom: none !important;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
+    background-color: var(--o-aura-nav-color) !important;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, var(--o-aura-veil)),
+        rgba(255, 255, 255, var(--o-aura-veil))
+    ) !important;
 }
 
-/* If a blank strip remains at the top, uncomment:
-.o_navbar {
-    height: 0;
+/* Every child is transparent so the whole navbar shows one color */
+.o_main_navbar .o_menu_sections,
+.o_main_navbar .o_navbar_apps_menu,
+.o_main_navbar .o_menu_systray,
+.o_main_navbar .o_aura_company_header,
+.o_main_navbar .o_nav_entry,
+.o_main_navbar .dropdown-toggle,
+.o_main_navbar .o_menu_brand,
+.o_main_navbar .o_navbar_apps_menu button {
+    background: transparent !important;
+    color: #000 !important;
 }
-*/
 
-/* ========== COMPANY LOGO + NAME (side by side) ========== */
+.o_main_navbar i,
+.o_main_navbar .fa {
+    color: inherit !important;
+}
+
+/* Hover / open / active: original color back, white text */
+.o_main_navbar .o_nav_entry:hover,
+.o_main_navbar .o_nav_entry.active,
+.o_main_navbar .dropdown-toggle:hover,
+.o_main_navbar .dropdown-toggle.show,
+.o_main_navbar .o_menu_brand:hover,
+.o_main_navbar .o_navbar_apps_menu button:hover,
+.o_main_navbar .o_menu_systray .o_nav_entry:hover,
+.o_main_navbar .o_menu_systray .dropdown-toggle:hover {
+    background: var(--o-aura-nav-color) !important;
+    color: #fff !important;
+}
+
+/* ========== COMPANY LOGO + NAME ========== */
 .o_aura_company_header {
-    order: -1; /* placed before the menu items */
+    order: -1;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     padding: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     margin-bottom: 8px;
     flex-shrink: 0;
     min-width: 0;
 }
 
 .o_aura_company_logo {
-    height: 32px;
-    width: auto;
-    max-width: 48px;
+    height: 40px;
+    width: 40px;
     object-fit: contain;
+    border-radius: 12px;
     flex-shrink: 0;
 }
 
 .o_aura_company_name {
     flex: 1;
-    min-width: 0; /* needed for ellipsis inside flex */
-    font-size: 14px;
-    font-weight: 600;
+    min-width: 0;
+    font-size: inherit;
+    font-weight: 700;
     line-height: 1.3;
+    color: #000;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    opacity: 0.95;
 }
 
-/* ========== MENU SECTIONS ========== */
-.o_main_navbar > .o_menu_sections,
-.o_main_navbar > .o_navbar_apps_menu,
-.o_main_navbar > .o_menu_brand {
-    width: 100% !important;
-}
+/* ========== DESKTOP: FLOATING SIDEBAR ========== */
+@media (min-width: 768px) {
 
-.o_main_navbar .o_menu_sections {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    flex: 1;
-    padding: 0 8px !important;
-    margin: 0 !important;
-}
+    /* Wrapper must not paint a strip behind the floating card */
+    .o_navbar {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
 
-/* Menu entries */
-.o_main_navbar .o_nav_entry,
-.o_main_navbar .dropdown-toggle,
-.o_main_navbar .o_menu_brand {
-    width: 100% !important;
-    text-align: left !important;
-    justify-content: flex-start !important;
-    padding: 9px 12px !important;
-    border-radius: 8px;
-    margin: 2px 0;
-}
+    .o_main_navbar {
+        position: fixed !important;
+        top: var(--o-aura-gap);
+        bottom: var(--o-aura-gap);
+        left: var(--o-aura-gap);
+        width: var(--o-aura-sidebar-width);
+        height: auto !important;
+        z-index: 1050;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        border: none !important;
+        border-radius: var(--o-aura-radius);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);   /* "floating" look */
+        box-sizing: border-box;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 
-/* Apps menu button */
-.o_main_navbar .o_navbar_apps_menu {
-    padding: 4px 8px;
-}
+    /* Content shift = sidebar + left gap + gap between sidebar and content */
+    .o_web_client {
+        padding-left: calc(var(--o-aura-sidebar-width) + var(--o-aura-gap) * 2) !important;
+    }
 
-.o_main_navbar .o_navbar_apps_menu button {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 9px 12px;
-    border-radius: 8px;
-}
+    /* ----- Menu sections ----- */
+    .o_main_navbar > .o_menu_sections,
+    .o_main_navbar > .o_navbar_apps_menu,
+    .o_main_navbar > .o_menu_brand {
+        width: 100% !important;
+    }
 
-/* ========== SYSTRAY (Bottom) ========== */
-.o_main_navbar .o_menu_systray {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    margin-top: auto;
-    padding: 12px 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    gap: 4px;
-}
+    .o_main_navbar .o_menu_sections {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        flex: 1;
+        padding: 0 10px !important;
+        margin: 0 !important;
+    }
 
-/* ========== CONTENT SHIFT ========== */
-.o_web_client {
-    padding-left: var(--o-aura-sidebar-width) !important;
+    /* Menu entries: pill shape + smooth hover */
+    .o_main_navbar .o_nav_entry,
+    .o_main_navbar .dropdown-toggle,
+    .o_main_navbar .o_menu_brand {
+        display: flex;
+        align-items: center;
+        width: 100% !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        padding: 9px 12px !important;
+        margin: 2px 0;
+        border-radius: var(--o-aura-item-radius);
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .o_main_navbar .o_nav_entry:hover,
+    .o_main_navbar .dropdown-toggle:hover {
+        transform: translateX(3px);           /* subtle "hovering" movement */
+    }
+
+    /* Caret pushed to the right edge */
+    .o_main_navbar .dropdown-toggle::after {
+        margin-left: auto;
+        transition: transform 0.2s ease;
+    }
+    .o_main_navbar .dropdown-toggle.show::after {
+        transform: rotate(180deg);
+    }
+
+    /* ----- Submenus: expand inline under the parent (accordion) ----- */
+    .o_main_navbar .dropdown-menu {
+        position: static !important;
+        inset: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 2px 0 4px 0 !important;
+        padding: 0 0 0 14px !important;
+        background: transparent !important;
+        border: none !important;
+        border-left: 2px solid rgba(0, 0, 0, 0.12) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .o_main_navbar .dropdown-menu .dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 7px 12px;
+        margin: 2px 0;
+        font-size: 0.95em;
+        color: #000 !important;
+        background: transparent !important;
+        border-radius: var(--o-aura-item-radius);
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .o_main_navbar .dropdown-menu .dropdown-item:hover,
+    .o_main_navbar .dropdown-menu .dropdown-item.active {
+        background: var(--o-aura-nav-color) !important;
+        color: #fff !important;
+        transform: translateX(3px);
+    }
+
+    /* ----- Apps button ----- */
+    .o_main_navbar .o_navbar_apps_menu {
+        padding: 4px 10px;
+    }
+
+    .o_main_navbar .o_navbar_apps_menu button {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 9px 12px;
+        border-radius: var(--o-aura-item-radius);
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* ----- Systray (bottom) ----- */
+    .o_main_navbar .o_menu_systray {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        margin-top: auto;
+        padding: 12px 10px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        gap: 4px;
+    }
 }
 
 /* ========== MOBILE ========== */
@@ -143,86 +249,4 @@
         border-top: none;
         justify-content: flex-end;
     }
-}
-
-/* ========== SOFT BACKGROUND + DARK TEXT ========== */
-/* ========== SOFT BACKGROUND + DARK TEXT (whole navbar) ========== */
-:root {
-    /* put your ORIGINAL navbar color here */
-    --o-aura-nav-color: #714b67;
-    /* veil opacity: higher = lighter, 0 = original color */
-    --o-aura-veil: 0.85;
-}
-
-.o_main_navbar {
-    background-color: var(--o-aura-nav-color) !important;
-    background-image: linear-gradient(
-        rgba(255, 255, 255, var(--o-aura-veil)),
-        rgba(255, 255, 255, var(--o-aura-veil))
-    ) !important;
-}
-
-/* Every child is transparent, so the whole navbar shows one color */
-.o_main_navbar .o_menu_sections,
-.o_main_navbar .o_navbar_apps_menu,
-.o_main_navbar .o_menu_systray,
-.o_main_navbar .o_aura_company_header,
-.o_main_navbar .o_nav_entry,
-.o_main_navbar .dropdown-toggle,
-.o_main_navbar .o_menu_brand,
-.o_main_navbar .o_navbar_apps_menu button {
-    background: transparent !important;
-    color: #000 !important;
-}
-
-.o_main_navbar i,
-.o_main_navbar .fa {
-    color: inherit !important;
-}
-
-/* Hover / open: veil goes to 0 (original color back) and text turns white */
-.o_main_navbar .o_nav_entry:hover,
-.o_main_navbar .dropdown-toggle:hover,
-.o_main_navbar .dropdown-toggle.show,
-.o_main_navbar .o_menu_brand:hover,
-.o_main_navbar .o_navbar_apps_menu button:hover,
-.o_main_navbar .o_menu_systray .o_nav_entry:hover,
-.o_main_navbar .o_menu_systray .dropdown-toggle:hover {
-    background: var(--o-aura-nav-color) !important;
-    color: #fff !important;
-}
-
-/* ========== COMPANY LOGO + NAME (side by side) ========== */
-.o_aura_company_header {
-    order: -1;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12); /* dark line for the light background */
-    margin-bottom: 8px;
-    flex-shrink: 0;
-    min-width: 0;
-}
-
-.o_aura_company_logo {
-    height: 48px;               /* was 32px */
-    width: 48px;
-    max-width: 64px;
-    object-fit: contain;
-    border-radius: 12px;        /* rounded corners */
-    flex-shrink: 0;
-}
-
-.o_aura_company_name {
-    flex: 1;
-    min-width: 0;
-    font-size: inherit;         /* same size as the menu items */
-    font-weight: 700;           /* bold */
-    line-height: 1.3;
-    color: #000;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
