@@ -3,6 +3,7 @@
 
     <t t-name="web.NavBar" t-inherit="web.NavBar" t-inherit-mode="extension">
         <xpath expr="//nav[hasclass('o_main_navbar')]" position="inside">
+
             <div class="o_aura_company_header" t-if="auraCompany">
                 <img class="o_aura_company_logo"
                      t-att-src="'/web/image/res.company/' + auraCompany.id + '/logo'"
@@ -15,6 +16,29 @@
                     <i class="fa" t-att-class="auraState.collapsed ? 'fa-chevron-right' : 'fa-chevron-left'"/>
                 </button>
             </div>
+
+            <div class="o_aura_apps">
+                <button type="button" class="o_aura_apps_btn" t-on-click="toggleAuraApps" title="Apps">
+                    <i class="oi oi-apps"/>
+                    <span class="o_aura_apps_label">Apps</span>
+                    <i class="fa o_aura_apps_caret"
+                       t-att-class="auraState.appsOpen ? 'fa-chevron-up' : 'fa-chevron-down'"/>
+                </button>
+
+                <div class="o_aura_apps_grid" t-if="auraState.appsOpen">
+                    <button type="button"
+                            class="o_aura_app"
+                            t-foreach="auraApps"
+                            t-as="app"
+                            t-key="app.id"
+                            t-att-title="app.name"
+                            t-att-class="{ 'active': auraCurrentApp and auraCurrentApp.id === app.id }"
+                            t-on-click="() => this.openAuraApp(app)">
+                        <img t-att-src="auraAppIcon(app)" t-att-alt="app.name"/>
+                    </button>
+                </div>
+            </div>
+
         </xpath>
     </t>
 

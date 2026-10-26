@@ -338,3 +338,109 @@
         justify-content: flex-end;
     }
 }
+
+/* ========== APPS GRID (custom) ========== */
+.o_aura_apps {
+    display: none;   /* desktop only, mobile keeps Odoo's own apps menu */
+}
+
+@media (min-width: 768px) {
+
+    /* Hide Odoo's native apps button, we render our own */
+    .o_main_navbar .o_navbar_apps_menu {
+        display: none !important;
+    }
+
+    .o_aura_apps {
+        order: -1;                 /* right after the company header */
+        display: block;
+        flex-shrink: 0;
+        padding: 0 8px;
+    }
+
+    .o_aura_apps_btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 8px 10px;
+        font: inherit;
+        color: #000 !important;
+        background: transparent !important;
+        border: none;
+        border-radius: var(--o-aura-item-radius);
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .o_aura_apps_btn:hover {
+        background: var(--o-aura-nav-color) !important;
+        color: #fff !important;
+    }
+
+    .o_aura_apps_caret {
+        margin-left: auto;
+        font-size: 10px;
+    }
+
+    /* The grid, opens right under the button */
+    .o_aura_apps_grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);   /* apps per row */
+        gap: 8px;
+        justify-items: center;
+        margin: 6px 0 8px;
+        padding: 8px;
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: var(--o-aura-item-radius);
+    }
+
+    .o_aura_app {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: var(--o-aura-item-radius);
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .o_aura_app img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    .o_aura_app:hover {
+        background: rgba(0, 0, 0, 0.08);
+        transform: scale(1.08);
+    }
+
+    .o_aura_app.active {
+        background: rgba(0, 0, 0, 0.12);
+    }
+
+    /* Collapsed sidebar: icon-only button, one app per row */
+    body.o_aura_nav_collapsed .o_aura_apps {
+        padding: 0 4px;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_apps_btn {
+        justify-content: center;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_apps_label,
+    body.o_aura_nav_collapsed .o_aura_apps_caret {
+        display: none;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_apps_grid {
+        grid-template-columns: 1fr;
+        padding: 6px 0;
+    }
+}
