@@ -8,6 +8,12 @@
                      t-att-src="'/web/image/res.company/' + auraCompany.id + '/logo'"
                      alt="Company Logo"/>
                 <span class="o_aura_company_name" t-out="auraCompany.name"/>
+                <button type="button"
+                        class="o_aura_toggle"
+                        t-on-click="toggleAuraCollapse"
+                        t-att-title="auraState.collapsed ? 'Expand menu' : 'Collapse menu'">
+                    <i class="fa" t-att-class="auraState.collapsed ? 'fa-chevron-right' : 'fa-chevron-left'"/>
+                </button>
             </div>
         </xpath>
     </t>

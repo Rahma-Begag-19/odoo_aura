@@ -1,10 +1,11 @@
-/* Odoo Aura - Floating Left Navigation */
+/* Odoo Aura - Left Navigation (sidebar in normal layout flow) */
 
 :root {
-    --o-aura-sidebar-width: 200px;   /* was 240px, change to taste */
-    --o-aura-gap: 12px;              /* space around the floating card */
-    --o-aura-radius: 20px;           /* navbar corners */
-    --o-aura-item-radius: 12px;      /* menu item pill corners */
+    --o-aura-sidebar-width: 180px;            /* change this to resize */
+    --o-aura-sidebar-collapsed-width: 72px;
+    --o-aura-gap: 10px;                       /* space around the sidebar card */
+    --o-aura-radius: 20px;                    /* sidebar corners */
+    --o-aura-item-radius: 12px;               /* menu item corners */
 
     /* put your ORIGINAL navbar color here */
     --o-aura-nav-color: #714b67;
@@ -52,14 +53,14 @@
     color: #fff !important;
 }
 
-/* ========== COMPANY LOGO + NAME ========== */
+/* ========== COMPANY LOGO + NAME + TOGGLE ========== */
 .o_aura_company_header {
     order: -1;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
+    gap: 10px;
+    padding: 14px 12px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     margin-bottom: 8px;
     flex-shrink: 0;
@@ -67,10 +68,10 @@
 }
 
 .o_aura_company_logo {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     object-fit: contain;
-    border-radius: 12px;
+    border-radius: 10px;
     flex-shrink: 0;
 }
 
@@ -86,38 +87,75 @@
     text-overflow: ellipsis;
 }
 
-/* ========== DESKTOP: FLOATING SIDEBAR ========== */
+.o_aura_toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #000 !important;
+    background: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.o_aura_toggle:hover {
+    background: var(--o-aura-nav-color) !important;
+    color: #fff !important;
+    border-color: var(--o-aura-nav-color);
+}
+
+/* ========== DESKTOP: SIDEBAR IN THE LAYOUT ========== */
 @media (min-width: 768px) {
 
-    /* Wrapper must not paint a strip behind the floating card */
+    /* Page becomes: [ sidebar column ] [ content ] */
+    .o_web_client {
+        display: flex !important;
+        flex-direction: row !important;
+        padding-left: 0 !important;
+    }
+
+    /* The wrapper reserves the sidebar's space (card width + gap on every side) */
     .o_navbar {
+        display: flex;
+        flex: 0 0 auto;
+        width: calc(var(--o-aura-sidebar-width) + var(--o-aura-gap) * 2);
+        padding: var(--o-aura-gap);
+        box-sizing: border-box;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
+        transition: width 0.25s ease;
     }
 
+    /* The card itself: normal flow, no fixed positioning */
     .o_main_navbar {
-        position: fixed !important;
-        top: var(--o-aura-gap);
-        bottom: var(--o-aura-gap);
-        left: var(--o-aura-gap);
-        width: var(--o-aura-sidebar-width);
+        position: relative !important;
+        flex: 1;
+        width: 100% !important;
+        min-width: 0;
         height: auto !important;
-        z-index: 1050;
         display: flex;
         flex-direction: column;
         padding: 0;
         border: none !important;
         border-radius: var(--o-aura-radius);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);   /* "floating" look */
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
         box-sizing: border-box;
         overflow-y: auto;
         overflow-x: hidden;
     }
 
-    /* Content shift = sidebar + left gap + gap between sidebar and content */
-    .o_web_client {
-        padding-left: calc(var(--o-aura-sidebar-width) + var(--o-aura-gap) * 2) !important;
+    /* Content takes the remaining space */
+    .o_action_manager {
+        flex: 1 1 0;
+        min-width: 0;
     }
 
     /* ----- Menu sections ----- */
@@ -132,7 +170,7 @@
         flex-direction: column !important;
         align-items: stretch !important;
         flex: 1;
-        padding: 0 10px !important;
+        padding: 0 8px !important;
         margin: 0 !important;
     }
 
@@ -145,7 +183,7 @@
         width: 100% !important;
         text-align: left !important;
         justify-content: flex-start !important;
-        padding: 9px 12px !important;
+        padding: 8px 10px !important;
         margin: 2px 0;
         border-radius: var(--o-aura-item-radius);
         transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
@@ -153,10 +191,9 @@
 
     .o_main_navbar .o_nav_entry:hover,
     .o_main_navbar .dropdown-toggle:hover {
-        transform: translateX(3px);           /* subtle "hovering" movement */
+        transform: translateX(3px);
     }
 
-    /* Caret pushed to the right edge */
     .o_main_navbar .dropdown-toggle::after {
         margin-left: auto;
         transition: transform 0.2s ease;
@@ -173,7 +210,7 @@
         width: 100% !important;
         min-width: 0 !important;
         margin: 2px 0 4px 0 !important;
-        padding: 0 0 0 14px !important;
+        padding: 0 0 0 12px !important;
         background: transparent !important;
         border: none !important;
         border-left: 2px solid rgba(0, 0, 0, 0.12) !important;
@@ -184,7 +221,7 @@
     .o_main_navbar .dropdown-menu .dropdown-item {
         display: block;
         width: 100%;
-        padding: 7px 12px;
+        padding: 6px 10px;
         margin: 2px 0;
         font-size: 0.95em;
         color: #000 !important;
@@ -202,13 +239,13 @@
 
     /* ----- Apps button ----- */
     .o_main_navbar .o_navbar_apps_menu {
-        padding: 4px 10px;
+        padding: 4px 8px;
     }
 
     .o_main_navbar .o_navbar_apps_menu button {
         width: 100%;
         justify-content: flex-start;
-        padding: 9px 12px;
+        padding: 8px 10px;
         border-radius: var(--o-aura-item-radius);
         transition: background-color 0.2s ease, color 0.2s ease;
     }
@@ -219,24 +256,75 @@
         flex-direction: column !important;
         width: 100% !important;
         margin-top: auto;
-        padding: 12px 10px;
+        padding: 10px 8px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         gap: 4px;
+    }
+
+    /* ========== COLLAPSED ========== */
+    body.o_aura_nav_collapsed {
+        --o-aura-sidebar-width: var(--o-aura-sidebar-collapsed-width);
+    }
+
+    body.o_aura_nav_collapsed .o_aura_company_header {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 0;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_company_name {
+        display: none;
+    }
+
+    body.o_aura_nav_collapsed .o_aura_toggle {
+        margin-left: 0;
+    }
+
+    body.o_aura_nav_collapsed .o_main_navbar .o_menu_sections {
+        display: none !important;
+    }
+
+    body.o_aura_nav_collapsed .o_main_navbar .o_navbar_apps_menu {
+        padding: 4px 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    body.o_aura_nav_collapsed .o_main_navbar .o_navbar_apps_menu button {
+        width: auto;
+        justify-content: center;
+    }
+
+    body.o_aura_nav_collapsed .o_main_navbar .o_menu_systray {
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    body.o_aura_nav_collapsed .o_main_navbar .o_menu_systray .o_nav_entry,
+    body.o_aura_nav_collapsed .o_main_navbar .o_menu_systray .dropdown-toggle {
+        justify-content: center !important;
+        width: auto !important;
+    }
+
+    body.o_aura_nav_collapsed .o_main_navbar .oe_topbar_name,
+    body.o_aura_nav_collapsed .o_main_navbar .dropdown-toggle::after {
+        display: none !important;
     }
 }
 
 /* ========== MOBILE ========== */
 @media (max-width: 767.98px) {
+    .o_web_client {
+        padding-left: 0 !important;
+    }
+
     .o_main_navbar {
         position: relative !important;
         width: 100% !important;
         height: auto !important;
         border-right: none;
         overflow: visible;
-    }
-
-    .o_web_client {
-        padding-left: 0 !important;
     }
 
     .o_aura_company_header {
