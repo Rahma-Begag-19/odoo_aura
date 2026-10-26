@@ -1,67 +1,147 @@
+/* Odoo Aura - Left Navigation */
 
-/* Odoo Aura - Left Navigation Experiment */
+:root {
+    --o-aura-sidebar-width: 240px;
+}
 
-/* Move the backend navbar to the left */
+/* ========== SIDEBAR ========== */
 .o_main_navbar {
     position: fixed !important;
     top: 0;
     bottom: 0;
     left: 0;
-    width: 240px;
+    width: var(--o-aura-sidebar-width);
     height: 100vh !important;
     z-index: 1050;
-
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-
+    padding: 0;
+    border-bottom: none !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
-
-    padding: 12px 8px;
-    border-bottom: none;
-    border-right: 1px solid #e5e7eb;
-    box-sizing: border-box;
 }
 
-/* Stack navbar menu groups vertically */
-.o_main_navbar > ul {
+/* If a blank strip remains at the top, uncomment:
+.o_navbar {
+    height: 0;
+}
+*/
+
+/* ========== COMPANY LOGO + NAME (side by side) ========== */
+.o_aura_company_header {
+    order: -1; /* placed before the menu items */
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    min-width: 0;
 }
 
-/* Make menu entries use the available sidebar width */
-.o_main_navbar .o_menu_sections,
-.o_main_navbar .o_menu_systray {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
+.o_aura_company_logo {
+    height: 32px;
+    width: auto;
+    max-width: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
-/* Keep menu entries readable */
+.o_aura_company_name {
+    flex: 1;
+    min-width: 0; /* needed for ellipsis inside flex */
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.95;
+}
+
+/* ========== MENU SECTIONS ========== */
+.o_main_navbar > .o_menu_sections,
+.o_main_navbar > .o_navbar_apps_menu,
+.o_main_navbar > .o_menu_brand {
+    width: 100% !important;
+}
+
+.o_main_navbar .o_menu_sections {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    flex: 1;
+    padding: 0 8px !important;
+    margin: 0 !important;
+}
+
+/* Menu entries */
 .o_main_navbar .o_nav_entry,
-.o_main_navbar .dropdown-toggle {
+.o_main_navbar .dropdown-toggle,
+.o_main_navbar .o_menu_brand {
+    width: 100% !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    padding: 9px 12px !important;
+    border-radius: 8px;
+    margin: 2px 0;
+}
+
+/* Apps menu button */
+.o_main_navbar .o_navbar_apps_menu {
+    padding: 4px 8px;
+}
+
+.o_main_navbar .o_navbar_apps_menu button {
     width: 100%;
-    text-align: left;
+    justify-content: flex-start;
+    padding: 9px 12px;
+    border-radius: 8px;
 }
 
-/* Leave room for the fixed sidebar */
+/* ========== SYSTRAY (Bottom) ========== */
+.o_main_navbar .o_menu_systray {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    margin-top: auto;
+    padding: 12px 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    gap: 4px;
+}
+
+/* ========== CONTENT SHIFT ========== */
 .o_web_client {
-    padding-left: 240px;
+    padding-left: var(--o-aura-sidebar-width) !important;
 }
 
-/* Avoid the sidebar taking space on narrow screens */
+/* ========== MOBILE ========== */
 @media (max-width: 767.98px) {
     .o_main_navbar {
         position: relative !important;
-        width: 100%;
+        width: 100% !important;
         height: auto !important;
-        bottom: auto;
+        border-right: none;
+        overflow: visible;
     }
 
     .o_web_client {
-        padding-left: 0;
+        padding-left: 0 !important;
+    }
+
+    .o_aura_company_header {
+        display: none;
+    }
+
+    .o_main_navbar .o_menu_systray {
+        flex-direction: row !important;
+        margin-top: 0;
+        border-top: none;
+        justify-content: flex-end;
     }
 }
+

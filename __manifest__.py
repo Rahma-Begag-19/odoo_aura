@@ -21,6 +21,8 @@
     ],
     'assets': {
         'web.assets_backend': [
+            'odoo_aura/static/src/js/navbar.js',
+            'odoo_aura/static/src/xml/navbar.xml',
             'odoo_aura/static/src/scss/navbar.scss',
         ],
     },

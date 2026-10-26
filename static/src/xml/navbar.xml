@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="web.NavBar" t-inherit="web.NavBar" t-inherit-mode="extension">
+        <xpath expr="//nav[hasclass('o_main_navbar')]" position="inside">
+            <div class="o_aura_company_header" t-if="auraCompany">
+                <img class="o_aura_company_logo"
+                     t-att-src="'/web/image/res.company/' + auraCompany.id + '/logo'"
+                     alt="Company Logo"/>
+                <span class="o_aura_company_name" t-out="auraCompany.name"/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>
